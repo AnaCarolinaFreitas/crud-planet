@@ -19,17 +19,34 @@ planetasRoutes.get("/", (req, res) => {
 
   //rota para criar novos planetas
 planetasRoutes.post("/", (req, res) => {
-    const { titulo, genero, emCartaz } = req.body;
-    const novoFilme = {
-      id: Number(Math.floor(Math.random() * 99) + 1),
-      titulo,
-      genero,
-      emCartaz,
+    const { 
+        nome,
+        temperatura,
+        agua,
+        atm
+     } = req.body;
+
+     //validação de existencia de água//
+     if(agua != "sim" && agua != "não"){
+        return res.status(400).send({ menssage: "Digite 'sim' ou 'não'!" });	
+
+     }
+
+     if(!nome || !temperatura || !agua){
+        return res.status(400).send({ menssage: "Os campos nome, temperatura e água são obrigatórios" });
+
+     }
+    const novoPlaneta = {
+      id: Number(Math.floor(Math.random() * 999999) + 1),
+      nome,
+      temperatura,
+      agua,
+      atm
     };
   
-    planetas.push(novoFilme);
+    planetas.push(novoPlaneta);
   
-    return res.status(201).send(planetas);
+    return res.status(201).send({message: "Novo planeta cadastrado", novoPlaneta});
   });
 
   //rota para buscar um elemento específico para o array planetas
